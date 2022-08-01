@@ -1,0 +1,1 @@
+rootProject.name = "com.plusmobileapps.ktor-firebase-admin-sample"
