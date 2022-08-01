@@ -36,3 +36,5 @@ out/
 .vscode/
 
 local.properties
+
+src/main/resources/ktor-firebase-auth-adminsdk.json
