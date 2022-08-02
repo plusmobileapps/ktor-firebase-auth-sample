@@ -3,9 +3,12 @@ package com.plusmobileapps.firebaseadminsample
 import com.plusmobileapps.firebaseadminsample.firebase.User
 import com.plusmobileapps.firebaseadminsample.routes.authenticatedRoute
 import com.plusmobileapps.firebaseadminsample.util.mockAuthentication
+import com.plusmobileapps.firebaseadminsample.util.testRouting
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.resources.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import kotlin.test.Test
@@ -18,8 +21,10 @@ class AuthenticatedRouteTest {
         val user = User("some id", "Andrew")
         application {
             mockAuthentication { user }
-            routing { authenticatedRoute() }
+            testRouting { authenticatedRoute() }
         }
+
+        routing {  }
 
         client.get("/authenticated").apply {
             assertEquals(HttpStatusCode.OK, status)
@@ -31,7 +36,7 @@ class AuthenticatedRouteTest {
     fun `authenticated route - is unauthorized`() = testApplication {
         application {
             mockAuthentication { null }
-            routing { authenticatedRoute() }
+            testRouting { authenticatedRoute() }
         }
 
         client.get("/authenticated").apply {
