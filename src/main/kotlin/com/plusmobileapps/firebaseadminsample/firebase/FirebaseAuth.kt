@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class FirebaseAuthProvider(config: FirebaseConfig): AuthenticationProvider(config) {
+class FirebaseAuthProvider(config: FirebaseConfig) : AuthenticationProvider(config) {
     val authHeader: (ApplicationCall) -> HttpAuthHeader? = config.authHeader
     private val authFunction = config.firebaseAuthenticationFunction
 
@@ -18,7 +18,10 @@ class FirebaseAuthProvider(config: FirebaseConfig): AuthenticationProvider(confi
         val token = authHeader(context.call)
 
         if (token == null) {
-            context.challenge(FirebaseJWTAuthKey, AuthenticationFailedCause.InvalidCredentials) { challengeFunc, call ->
+            context.challenge(
+                FirebaseJWTAuthKey,
+                AuthenticationFailedCause.InvalidCredentials
+            ) { challengeFunc, call ->
                 challengeFunc.complete()
                 call.respond(UnauthorizedResponse(HttpAuthHeader.bearerAuthChallenge(realm = FIREBASE_AUTH)))
             }
@@ -52,7 +55,10 @@ class FirebaseConfig(name: String?) : AuthenticationProvider.Config(name) {
     }
 }
 
-public fun AuthenticationConfig.firebase(name: String? = FIREBASE_AUTH, configure: FirebaseConfig.() -> Unit) {
+public fun AuthenticationConfig.firebase(
+    name: String? = FIREBASE_AUTH,
+    configure: FirebaseConfig.() -> Unit
+) {
     val provider = FirebaseAuthProvider(FirebaseConfig(name).apply(configure))
     register(provider)
 }
@@ -77,11 +83,11 @@ suspend fun verifyFirebaseIdToken(
     return tokenData(call, token)
 }
 
-private fun HttpAuthHeader.Companion.bearerAuthChallenge(realm: String): HttpAuthHeader {
+fun HttpAuthHeader.Companion.bearerAuthChallenge(realm: String): HttpAuthHeader {
     return HttpAuthHeader.Parameterized("Bearer", mapOf(HttpAuthHeader.Parameters.Realm to realm))
 }
 
-private fun ApplicationRequest.parseAuthorizationHeaderOrNull() = try {
+fun ApplicationRequest.parseAuthorizationHeaderOrNull() = try {
     parseAuthorizationHeader()
 } catch (ex: IllegalArgumentException) {
     println("failed to parse token")
@@ -89,6 +95,6 @@ private fun ApplicationRequest.parseAuthorizationHeaderOrNull() = try {
 }
 
 const val FIREBASE_AUTH = "FIREBASE_AUTH"
-private const val FirebaseJWTAuthKey: String = "FirebaseAuth"
+const val FirebaseJWTAuthKey: String = "FirebaseAuth"
 private const val FirebaseImplementationError =
     "Firebase  auth validate function is not specified, use firebase { validate { ... } }to fix"
