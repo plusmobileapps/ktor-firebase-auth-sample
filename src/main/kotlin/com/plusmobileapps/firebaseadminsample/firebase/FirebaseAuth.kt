@@ -45,7 +45,6 @@ class FirebaseConfig(name: String?) : AuthenticationProvider.Config(name) {
     internal var authHeader: (ApplicationCall) -> HttpAuthHeader? =
         { call -> call.request.parseAuthorizationHeaderOrNull() }
 
-
     var firebaseAuthenticationFunction: AuthenticationFunction<FirebaseToken> = {
         throw NotImplementedError(FirebaseImplementationError)
     }
@@ -55,7 +54,7 @@ class FirebaseConfig(name: String?) : AuthenticationProvider.Config(name) {
     }
 }
 
-public fun AuthenticationConfig.firebase(
+fun AuthenticationConfig.firebase(
     name: String? = FIREBASE_AUTH,
     configure: FirebaseConfig.() -> Unit
 ) {
@@ -83,11 +82,10 @@ suspend fun verifyFirebaseIdToken(
     return tokenData(call, token)
 }
 
-fun HttpAuthHeader.Companion.bearerAuthChallenge(realm: String): HttpAuthHeader {
-    return HttpAuthHeader.Parameterized("Bearer", mapOf(HttpAuthHeader.Parameters.Realm to realm))
-}
+fun HttpAuthHeader.Companion.bearerAuthChallenge(realm: String): HttpAuthHeader =
+    HttpAuthHeader.Parameterized("Bearer", mapOf(HttpAuthHeader.Parameters.Realm to realm))
 
-fun ApplicationRequest.parseAuthorizationHeaderOrNull() = try {
+fun ApplicationRequest.parseAuthorizationHeaderOrNull(): HttpAuthHeader? = try {
     parseAuthorizationHeader()
 } catch (ex: IllegalArgumentException) {
     println("failed to parse token")
@@ -97,4 +95,4 @@ fun ApplicationRequest.parseAuthorizationHeaderOrNull() = try {
 const val FIREBASE_AUTH = "FIREBASE_AUTH"
 const val FirebaseJWTAuthKey: String = "FirebaseAuth"
 private const val FirebaseImplementationError =
-    "Firebase  auth validate function is not specified, use firebase { validate { ... } } to fixthis"
+    "Firebase  auth validate function is not specified, use firebase { validate { ... } } to fix this"
