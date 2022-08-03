@@ -97,4 +97,4 @@ fun ApplicationRequest.parseAuthorizationHeaderOrNull() = try {
 const val FIREBASE_AUTH = "FIREBASE_AUTH"
 const val FirebaseJWTAuthKey: String = "FirebaseAuth"
 private const val FirebaseImplementationError =
-    "Firebase  auth validate function is not specified, use firebase { validate { ... } }to fix"
+    "Firebase  auth validate function is not specified, use firebase { validate { ... } } to fixthis"
