@@ -5,6 +5,7 @@ import com.plusmobileapps.firebaseadminsample.firebase.FirebaseJWTAuthKey
 import com.plusmobileapps.firebaseadminsample.firebase.User
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.testing.*
 
 class FirebaseAuthTestProvider(config: FirebaseTestConfig) : AuthenticationProvider(config) {
 
@@ -33,7 +34,7 @@ class FirebaseTestConfig(name: String?) : AuthenticationProvider.Config(name) {
 
 }
 
-fun Application.mockAuthentication(mockAuth: () -> User?) {
+fun ApplicationTestBuilder.mockAuthentication(mockAuth: () -> User?) {
     install(Authentication) {
         firebaseTest {
             mockAuthentication { mockAuth() }
