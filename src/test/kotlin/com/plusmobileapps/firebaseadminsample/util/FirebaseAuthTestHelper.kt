@@ -8,7 +8,7 @@ import io.ktor.server.testing.*
 
 class FirebaseAuthTestProvider(config: FirebaseTestConfig) : AuthenticationProvider(config) {
 
-    private val authFunction: () -> User? = config.mockAuthFunction
+    private val authFunction: () -> User? = config.mockAuthProvider
 
     override suspend fun onAuthenticate(context: AuthenticationContext) {
         val mockUser: User? = authFunction()
@@ -25,26 +25,19 @@ class FirebaseAuthTestProvider(config: FirebaseTestConfig) : AuthenticationProvi
 
 class FirebaseTestConfig(name: String?) : AuthenticationProvider.Config(name) {
 
-    var mockAuthFunction: () -> User? = { null }
+    var mockAuthProvider: () -> User? = { null }
 
-    fun mockAuthentication(mockUser: () -> User?) {
-        mockAuthFunction = mockUser
+    fun mockAuthProvider(mockAuth: () -> User?) {
+        mockAuthProvider = mockAuth
     }
 
 }
 
 fun ApplicationTestBuilder.mockAuthentication(mockAuth: () -> User?) {
     install(Authentication) {
-        firebaseTest {
-            mockAuthentication { mockAuth() }
-        }
+        val provider = FirebaseAuthTestProvider(FirebaseTestConfig(FIREBASE_AUTH).apply {
+            mockAuthProvider(mockAuth)
+        })
+        register(provider)
     }
-}
-
-private fun AuthenticationConfig.firebaseTest(
-    name: String? = FIREBASE_AUTH,
-    configure: FirebaseTestConfig.() -> Unit
-) {
-    val provider = FirebaseAuthTestProvider(FirebaseTestConfig(name).apply(configure))
-    register(provider)
 }
