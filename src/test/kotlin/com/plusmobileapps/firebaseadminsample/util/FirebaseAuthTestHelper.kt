@@ -29,16 +29,12 @@ class FirebaseTestConfig(name: String?) : AuthenticationProvider.Config(name) {
 
     var mockAuthProvider: () -> User? = { null }
 
-    fun mockAuthProvider(mockAuth: () -> User?) {
-        mockAuthProvider = mockAuth
-    }
-
 }
 
 fun ApplicationTestBuilder.mockAuthentication(mockAuth: () -> User? = { defaultTestUser }) {
     install(Authentication) {
         val provider = FirebaseAuthTestProvider(FirebaseTestConfig(FIREBASE_AUTH).apply {
-            mockAuthProvider(mockAuth)
+            mockAuthProvider = mockAuth
         })
         register(provider)
     }
