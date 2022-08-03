@@ -6,6 +6,8 @@ import com.plusmobileapps.firebaseadminsample.firebase.User
 import io.ktor.server.auth.*
 import io.ktor.server.testing.*
 
+val defaultTestUser = User(userId = "some-user-id", displayName = "Darth Vader")
+
 class FirebaseAuthTestProvider(config: FirebaseTestConfig) : AuthenticationProvider(config) {
 
     private val authFunction: () -> User? = config.mockAuthProvider
@@ -33,7 +35,7 @@ class FirebaseTestConfig(name: String?) : AuthenticationProvider.Config(name) {
 
 }
 
-fun ApplicationTestBuilder.mockAuthentication(mockAuth: () -> User?) {
+fun ApplicationTestBuilder.mockAuthentication(mockAuth: () -> User? = { defaultTestUser }) {
     install(Authentication) {
         val provider = FirebaseAuthTestProvider(FirebaseTestConfig(FIREBASE_AUTH).apply {
             mockAuthProvider(mockAuth)

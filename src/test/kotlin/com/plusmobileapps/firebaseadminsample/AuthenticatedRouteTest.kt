@@ -24,7 +24,7 @@ class AuthenticatedRouteTest {
         }
     }
 
-    @org.junit.Test
+    @Test
     fun `authenticated route - is unauthorized`() = testApplication {
         mockAuthentication { null }
         routing { authenticatedRoute() }
