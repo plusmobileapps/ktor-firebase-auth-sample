@@ -1,6 +1,8 @@
 # Ktor Firebase Auth Sample 
 
-This is a [Ktor](https://ktor.io/) server sample that configures [authentication](https://ktor.io/docs/authentication.html) for use with the [Firebase Admin SDK](https://firebase.google.com/docs/admin/setup).
+This is a [Ktor](https://ktor.io/) server sample that configures [authentication](https://ktor.io/docs/authentication.html) for use with the [Firebase Admin SDK](https://firebase.google.com/docs/admin/setup). 
+
+For a more detailed description on how this project was configured, please check out this [article](https://plusmobileapps.com/2022/08/02/ktor-firebase-auth.html).
 
 ## Basic Usage 
 
@@ -50,8 +52,3 @@ Now you can make a get request to `http://0.0.0.0:8080/authenticated` with the [
 curl --location --request GET 'http://0.0.0.0:8080/authenticated' \
 --header 'Authorization: Bearer insert-firebase-access-token'
 ```
-
-## Resources 
-
-* [Ktor 1.6 Firebase Auth Medium Article](https://levelup.gitconnected.com/how-to-integrate-firebase-authentication-with-ktors-auth-feature-dc2c3893a0cc)
-* [Stackoverflow answer](https://stackoverflow.com/questions/72443764/how-to-use-firebase-admin-with-ktor-2-0)
