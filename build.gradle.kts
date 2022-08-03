@@ -29,7 +29,6 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("io.ktor:ktor-server-resources:$ktor_version")
 
     implementation("com.google.firebase:firebase-admin:9.0.0")
 
