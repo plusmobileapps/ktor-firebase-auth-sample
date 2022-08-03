@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 class RootRoute
 
 fun Route.rootRoute() {
-    get<RootRoute>() {
+    get<RootRoute> {
         call.respondText("Hello World, this is a public endpoint!")
     }
 }
