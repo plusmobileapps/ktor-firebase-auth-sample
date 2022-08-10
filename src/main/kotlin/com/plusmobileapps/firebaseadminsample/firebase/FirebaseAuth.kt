@@ -33,6 +33,13 @@ class FirebaseAuthProvider(config: FirebaseConfig) : AuthenticationProvider(conf
 
             if (principal != null) {
                 context.principal(principal)
+            } else {
+                context.challenge(
+                    FirebaseJWTAuthKey, AuthenticationFailedCause.InvalidCredentials
+                ) { challengeFunc, call ->
+                    challengeFunc.complete()
+                    call.respond(UnauthorizedResponse(HttpAuthHeader.bearerAuthChallenge(realm = FIREBASE_AUTH)))
+                }
             }
         } catch (cause: Throwable) {
             val message = cause.message ?: cause.javaClass.simpleName
