@@ -13,7 +13,7 @@ install(Authentication) {
     firebase {
         validate {
             // TODO look up user profile here to fill in any additional information
-            User(it.uid, it.name)
+            User(it.uid, it.name.orEmpty())
         }
     }
 }
