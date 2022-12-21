@@ -10,7 +10,7 @@ fun Application.configureFirebaseAuth() {
         firebase {
             validate {
                 // TODO look up user profile from DB
-                User(it.uid, it.name)
+                User(it.uid, it.name.orEmpty())
             }
         }
     }
